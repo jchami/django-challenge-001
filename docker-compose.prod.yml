@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  web:
+    build:
+      context: ./jungle
+    expose:
+      - 8000
+    volumes:
+      - static_volume:/jungle/staticfiles
+    command: /jungle/wait-for-it.sh db:5432 --
+              sh -c "gunicorn jungle.wsgi:application --bind 0.0.0.0:8000"
+    env_file:
+      - ./.env.prod
+    depends_on:
+      - db
+  db:
+    image: postgres:13
+    env_file:
+      - ./.env.prod
+    ports:
+      - "5432:5432"
+    volumes:
+    - pgdata:/var/lib/postgresql/data
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/jungle/staticfiles
+    ports:
+      - 8001:80
+    depends_on:
+      - web
+    
+
+
+volumes:
+  pgdata:
+  static_volume:

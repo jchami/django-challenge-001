@@ -1,0 +1,86 @@
+{
+  "info": {
+    "description": "API for BMAT assignment for Python Software Developer Position",
+    "title": "Charts API",
+    "version": ""
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/report/{date}": {
+      "get": {
+        "description": "Processes usage reports and ISRC lists for a given date.",
+        "operationId": "report_read",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "date",
+            "required": true,
+            "description": "Date in YYYY-MM-DD format.",
+            "schema": {
+              "title": "Date",
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "report"
+        ],
+        "responses": {
+          "200": {
+            "description": "Ingestion of data for requested date is either done or in progress."
+          },
+          "400": {
+            "description": "Date parameter not formatted correctly."
+          },
+          "404": {
+            "description": "Data for specified date not available for ingestion."
+          }
+        }
+      }
+    },
+    "/tracks/": {
+      "get": {
+        "description": "Returns a list of tracks from **all** processed data sorted by number of plays.",
+        "operationId": "tracks_list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "date",
+            "required": false,
+            "description": "Filters tracks by date. When set alone, returns data previously stored by /report/<date>.",
+            "schema": {
+              "title": "Date",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "isrc",
+            "required": false,
+            "description": "Filters tracks by ISRC. When set alone, sums number of plays across all available dates.",
+            "schema": {
+              "title": "ISRC",
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "tracks"
+        ],
+        "responses": {
+          "200": {
+            "description": "List of tracks sorted by number of plays."
+          },
+          "404": {
+            "description": "No tracks stored that match specified parameters."
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000"
+    }
+  ]
+}

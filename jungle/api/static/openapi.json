@@ -1,0 +1,298 @@
+{
+  "info": {
+    "description": "News provider API for Django Challenge #001",
+    "title": "Jungle Devs",
+    "version": ""
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/sign-up": {
+      "post": {
+        "description": "Creates a new user and returns an authentication token.",
+        "operationId": "sign_up",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "tags": ["auth"],
+        "responses": {}
+      }
+    },
+    "/api/login": {
+      "post": {
+        "description": "Authenticates user credentials and returns a token if they are valid.",
+        "operationId": "login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          }
+        },
+        "tags": ["auth"],
+        "responses": {}
+      }
+    },
+    "/api/admin/authors": {
+      "get": {
+        "description": "Returns a list of **all** registered authors.",
+        "operationId": "authors_list",
+        "security": [
+          {"BearerAuth": []}
+        ],
+        "tags": ["admin"],
+        "responses": {}
+      },
+      "post": {
+        "description": "Create a new author.",
+        "operationId": "create_author",
+        "security": [
+          {"BearerAuth": []}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Author"
+              }
+            }
+          }
+        },
+        "tags": ["admin"],
+        "responses": {}
+      },
+      "put": {
+        "description": "Update data for an existing author.",
+        "operationId": "update_author",
+        "security": [
+          {"BearerAuth": []}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Author"
+              }
+            }
+          }
+        },
+        "tags": ["admin"],
+        "responses": {}
+      },
+      "delete": {
+        "description": "Delete an existing author.",
+        "operationId": "delete_author",
+        "security": [
+          {"BearerAuth": []}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Author"
+              }
+            }
+          }
+        },
+        "tags": ["admin"],
+        "responses": {}
+      }
+    },
+    "/api/admin/articles": {
+      "get": {
+        "description": "Returns a list of **all** registered articles.",
+        "operationId": "articles_list",
+        "security": [
+          {"BearerAuth": []}
+        ],
+        "tags": ["admin"],
+        "responses": {}
+      },
+      "post": {
+        "description": "Create a new article.",
+        "operationId": "create_article",
+        "security": [
+          {"BearerAuth": []}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Article"
+              }
+            }
+          }
+        },
+        "tags": ["admin"],
+        "responses": {}
+      },
+      "put": {
+        "description": "Update data for an existing article.",
+        "operationId": "update_article",
+        "security": [
+          {"BearerAuth": []}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Article"
+              }
+            }
+          }
+        },
+        "tags": ["admin"],
+        "responses": {}
+      },
+      "delete": {
+        "description": "Delete an existing article.",
+        "operationId": "delete_article",
+        "security": [
+          {"BearerAuth": []}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Article"
+              }
+            }
+          }
+        },
+        "tags": ["admin"],
+        "responses": {}
+      }
+    },
+    "/api/articles": {
+      "get": {
+        "description": "Returns a list of articles in a given category.",
+        "operationId": "articles_category",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "category",
+            "required": true,
+            "schema": {
+              "title": "Category",
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["articles"],
+        "responses": {}
+      }
+    },
+    "/api/articles/{articleId}": {
+      "get": {
+        "description": "Returns data on a registered article given its id. If the requesting user is logged in, more details are included in the response.",
+        "operationId": "article_details",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "articleId",
+            "required": true,
+            "schema": {
+              "title": "Article Id",
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["articles"],
+        "responses": {}
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "example": "username"
+          },
+          "password": {
+            "type": "string",
+            "example": "password"
+          }
+        }
+      },
+      "Author": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "int64",
+            "example": "1"
+          },
+          "name": {
+            "type": "string",
+            "example": "Author Name"
+          },
+          "picture": {
+            "type": "string",
+            "example": "https://picture.url"
+          }
+        }
+      },
+      "Article": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "int64",
+            "example": "1"
+          },
+          "author": {
+            "type": "int64",
+            "example": "1"
+          },
+          "category": {
+            "type": "string",
+            "example": "Category"
+          },
+          "title": {
+            "type": "string",
+            "example": "Article title"
+          },
+          "summary": {
+            "type": "string",
+            "example": "This is a summary of the article"
+          },
+          "firstParagraph": {
+            "type": "string",
+            "example": "<p>This is the first paragraph of this article</p>"
+          },
+          "body": {
+            "type": "string",
+            "example": "<div><p>Second paragraph</p><p>Third paragraph</p></div>"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8001"
+    }
+  ]
+}

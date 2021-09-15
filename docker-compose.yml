@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  web:
+    build:
+      context: ./jungle
+    ports:
+      - "8001:8001"
+    command: /jungle/wait-for-it.sh db:5432 --
+              sh -c "python manage.py runserver 0.0.0.0:8001"
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=jungle_dev
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+    - pgdata:/var/lib/postgresql/data
+
+
+volumes:
+  pgdata:
